@@ -1,23 +1,17 @@
 const Koa = require('koa')
 const app = new Koa()
+const views = require('koa-views')
+const { resolve } = require('path')
 
-const mid1 = async (ctx, next) => {
-    ctx.type = 'text/html'
-    await next()
-    ctx.body += 'yes'
-}
+app.use(views(resolve(__dirname, './views'), {
+    extension: 'pug'
+}))
 
-const mid2 = async (ctx, next) => {
-    ctx.body = 'hi '
-    await next()
-}
+app.use(async (ctx, next) => {
+    await ctx.render('index', {
+        you: '子非鱼',
+        me: 'wu0792'
+    })
+})
 
-const mid3 = async (ctx, next) => {
-    ctx.body += 'wu0792'
-}
-
-app.use(mid1)
-app.use(mid2)
-app.use(mid3)
-
-app.listen(2333)
+app.listen(3344)
